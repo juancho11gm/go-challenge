@@ -1,7 +1,7 @@
 // Create basic API REST https://www.soberkoder.com/consume-rest-api-go - https://www.youtube.com/watch?v=W5b64DXeP0o
 // https://ipinfo.io/ instead of whois "github.com/likexian/whois-go"
 // get meta https://home.urlmeta.org/
-
+// Install https://www.cockroachlabs.com/docs/stable/build-a-go-app-with-cockroachdb-gorm.html , https://www.youtube.com/watch?v=6x9b0t-j1mM
 package main
 
 import (
@@ -12,9 +12,22 @@ import (
 	"net/http"
 	"os"
 
+	"database/sql"
+
+	_ "github.com/lib/pq"
+
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
 )
+
+var db *sql.DB
+
+//DB
+type DomainTbl struct {
+	Id    int
+	Name  string
+	Count int
+}
 
 //request to ssllabs
 type Request struct {
@@ -146,6 +159,46 @@ func makeRequest(ctx *fasthttp.RequestCtx) {
 
 func homePage(ctx *fasthttp.RequestCtx) {
 	fmt.Fprint(ctx, "Welcome to my first Go project!. Please go to /domain/yourdomain \n")
+	rows, err := db.Query("SELECT * FROM tbldomains;")
+	if err != nil {
+		log.Println(err)
+	} // (2)
+	defer rows.Close()
+	domains := make([]DomainTbl, 0)
+
+	// loop to the rows and display the records
+	for rows.Next() {
+		dom := DomainTbl{}
+		err := rows.Scan(&dom.Id, &dom.Name, &dom.Count)
+		if err != nil {
+			log.Println(err)
+		}
+		domains = append(domains, dom)
+	} // (3)
+
+	if err = rows.Err(); err != nil {
+		log.Println(err)
+		return
+	}
+
+	for _, dom := range domains {
+		log.Println(dom.Name)
+	} // (4)
+}
+
+func init() {
+	var err error
+	connStr := "postgres://juanc:password@localhost:26257/domains?sslmode=disable"
+	db, err = sql.Open("postgres", connStr)
+	if err != nil {
+		panic(err)
+	}
+
+	if err = db.Ping(); err != nil {
+		panic(err)
+	}
+	log.Println("Connected to the database")
+
 }
 
 func test() {
@@ -153,4 +206,5 @@ func test() {
 	router.GET("/", homePage)
 	router.GET("/domain/:domain", makeRequest)
 	log.Fatal(fasthttp.ListenAndServe(":8081", router.Handler))
+
 }
