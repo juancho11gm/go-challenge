@@ -2,15 +2,16 @@
 // https://ipinfo.io/ instead of whois "github.com/likexian/whois-go"
 // get meta https://home.urlmeta.org/
 // Install https://www.cockroachlabs.com/docs/stable/build-a-go-app-with-cockroachdb-gorm.html , https://www.youtube.com/watch?v=6x9b0t-j1mM
+// https://kb.objectrocket.com/cockroachdb/how-to-retrieve-cockroachdb-record-using-golang-web-app-561
 package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"database/sql"
 
@@ -64,6 +65,15 @@ type MetaInfo struct {
 type MetaObj struct {
 	Title string
 	Image string
+}
+
+func contains(arr []DomainTbl, str string) int {
+	for i := 0; i < len(arr); i++ {
+		if arr[i].Name == str {
+			return i
+		}
+	}
+	return -1
 }
 
 func getSsllabs(ctx *fasthttp.RequestCtx) Request {
@@ -155,10 +165,35 @@ func makeRequest(ctx *fasthttp.RequestCtx) {
 	server.Title = meta.Meta.Title
 	server.Logo = meta.Meta.Image
 	json.NewEncoder(ctx).Encode(server)
+	var domains []DomainTbl
+	domains = dbGetDomains(ctx)
+	pos := contains(domains, domain)
+	if pos == -1 {
+		dbAddDomain(domain)
+	} else {
+		dbUpdateDomain(domains[pos])
+	}
 }
 
-func homePage(ctx *fasthttp.RequestCtx) {
-	fmt.Fprint(ctx, "Welcome to my first Go project!. Please go to /domain/yourdomain \n")
+func dbUpdateDomain(domain DomainTbl) {
+	domainId := strconv.Itoa(domain.Id)
+	count := strconv.Itoa(domain.Count + 1)
+	rows, err := db.Query("UPDATE tbldomains SET count = " + count + " WHERE id = '" + domainId + "'")
+	if err != nil {
+		log.Println(err)
+	} // (2)
+	defer rows.Close()
+}
+
+func dbAddDomain(domain string) {
+	rows, err := db.Query("INSERT INTO tbldomains (name, count) VALUES('" + domain + "',1);")
+	if err != nil {
+		log.Println(err)
+	} // (2)
+	defer rows.Close()
+}
+
+func dbGetDomains(ctx *fasthttp.RequestCtx) []DomainTbl {
 	rows, err := db.Query("SELECT * FROM tbldomains;")
 	if err != nil {
 		log.Println(err)
@@ -174,16 +209,19 @@ func homePage(ctx *fasthttp.RequestCtx) {
 			log.Println(err)
 		}
 		domains = append(domains, dom)
-	} // (3)
+	}
 
 	if err = rows.Err(); err != nil {
 		log.Println(err)
-		return
 	}
 
-	for _, dom := range domains {
-		log.Println(dom.Name)
-	} // (4)
+	return domains
+}
+
+func homePage(ctx *fasthttp.RequestCtx) {
+	var domains []DomainTbl
+	domains = dbGetDomains(ctx)
+	json.NewEncoder(ctx).Encode(domains)
 }
 
 func init() {
@@ -198,7 +236,6 @@ func init() {
 		panic(err)
 	}
 	log.Println("Connected to the database")
-
 }
 
 func test() {
@@ -206,5 +243,4 @@ func test() {
 	router.GET("/", homePage)
 	router.GET("/domain/:domain", makeRequest)
 	log.Fatal(fasthttp.ListenAndServe(":8081", router.Handler))
-
 }
