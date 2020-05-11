@@ -1,8 +1,3 @@
-// Create basic API REST https://www.soberkoder.com/consume-rest-api-go - https://www.youtube.com/watch?v=W5b64DXeP0o
-// https://ipinfo.io/ instead of whois "github.com/likexian/whois-go"
-// get meta https://home.urlmeta.org/
-// Install https://www.cockroachlabs.com/docs/stable/build-a-go-app-with-cockroachdb-gorm.html , https://www.youtube.com/watch?v=6x9b0t-j1mM
-// https://kb.objectrocket.com/cockroachdb/how-to-retrieve-cockroachdb-record-using-golang-web-app-561
 package main
 
 import (
