@@ -4,15 +4,16 @@
 
 1. Create basic API REST to render domains. `domain/yourdomain`
 2. Once that we have the `domain` we can create:
-* GET request to [SSLLABS](https://api.ssllabs.com/) to get the servers info.
+* GET request to [SSLLABS](https://api.ssllabs.com/) to get the servers info. You can see the docs [here](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md).
 * GET request to [ipInfo](https://ipinfo.io/) to get the country and the organization name (API Key generated and Env variable created). I tried with [golang-packages]("github.com/likexian/whois-go") but there are some issues.
 * GET request to [metadata](https://home.urlmeta.org/) to get the image and the title of the webpage.
 
 3. Create Cockroach database
-* Download and install from [CockroachLabs](https://www.cockroachlabs.com/docs/stable/build-a-go-app-with-cockroachdb-gorm.html), also I saw this [video](https://www.youtube.com/watch?v=6x9b0t-j1mM) and followed this [tutorial](https://kb.objectrocket.com/cockroachdb/how-to-retrieve-cockroachdb-record-using-golang-web-app-561)
+* Download and install from [CockroachLabs](https://www.cockroachlabs.com/docs/stable/build-a-go-app-with-cockroachdb-gorm.html), also I saw this [video](https://www.youtube.com/watch?v=6x9b0t-j1mM) and followed this [tutorial](https://kb.objectrocket.com/cockroachdb/how-to-retrieve-cockroachdb-record-using-golang-web-app-561).
 * Inside the project db folder run in a new Powershell `cockroach start --insecure --listen-addr=localhost:26257 --http-addr=localhost:8080`.
 * Open a new terminal and inside the project db folder run `cockroach sql --insecure`.
-* SQL commands.
+
+### SQL commands.
 
 ```sql
 CREATE USER IF NOT EXISTS juanc;
@@ -31,6 +32,15 @@ DELETE FROM tbldomains WHERE name='pushdev';
 
 ## Frontend
 
+1. Install Vue. With nodejs run 
+
+* `npm i -g @vue/cli`
+* `vue create domains-app`
+* `cd domains-app`
+* `npm i vue-resource --save`
+* `npm run serve -- --port 3000`
+* `[How to install bootstrap](https://bootstrap-vue.org/docs)`
+ 
 ## How to run 
 
 * `go run environment.go main.go`
