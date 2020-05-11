@@ -12,12 +12,19 @@
         </b-input-group>
       </b-row>
 
-      <h1 v-if="requested">
-        <h2>Results</h2>
+      <div class="results" v-if="requested">
+        <h2>Results about {{domain}}</h2>
+        <b-img  :src="info[0].logo" width="500px" alt="Organization logo"></b-img>
         <b-container class="bv-example-row">
-          <b-row>{{info}}</b-row>
+          <b-row>
+              <b-table size="sm" stacked :fields="fields" :items="info"></b-table>
+          </b-row>
+          <h3>Endpoints</h3>
+           <b-row>
+              <b-table size="sm" stacked :items="info[0].Endpoints"></b-table>
+          </b-row>
         </b-container>
-      </h1>
+      </div>
     </b-container>
   </div>
 </template>
@@ -28,7 +35,16 @@ export default {
   data() {
     return {
       domain: "",
-      info: "",
+      fields: [
+          'ServersChanged',
+          'ssl_grade',
+          'previous_ssl_grade',
+          'logo',
+          'title',
+          'Status',
+        ],
+      info: [
+      ],
       requested: false
     };
   },
@@ -42,28 +58,37 @@ export default {
       this.$http
         .get("http://localhost:8081/domain/" + domain)
         .then(response => {
+          this.info.push(response.body);
           this.requested = true;
-          this.info = response.body
         });
-    }
+    },
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+a {
+  color: #42b983;
+}
+
 h3 {
   margin: 40px 0 0;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
-a {
-  color: #42b983;
+
+ul {
+  list-style-type: none;
+  padding: 0;
 }
+
+.results {
+  margin: 20px;
+}
+
 </style>

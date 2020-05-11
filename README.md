@@ -39,7 +39,7 @@ DELETE FROM tbldomains WHERE name='pushdev';
 * `cd domains-app`
 * `npm i vue-resource --save`
 * `npm run serve -- --port 3000`
-* `[How to install bootstrap](https://bootstrap-vue.org/docs)`
+* [How to install bootstrap](https://bootstrap-vue.org/docs)
  
 ## How to run 
 
