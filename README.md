@@ -47,4 +47,17 @@ DELETE FROM tbldomains WHERE name='pushdev';
 
 Enjoy!
 
+### Type the domain
+
+![image](https://user-images.githubusercontent.com/36536646/81629276-5eb6c500-93c8-11ea-81e9-17a1e32172a3.png)
+
+### See the results
+
+![image](https://user-images.githubusercontent.com/36536646/81629313-7aba6680-93c8-11ea-9af0-ab61a4b4782a.png)
+
+![image](https://user-images.githubusercontent.com/36536646/81629354-91f95400-93c8-11ea-871a-f07f7cc570f6.png)
+
+### Search history
+
+![image](https://user-images.githubusercontent.com/36536646/81629427-bb19e480-93c8-11ea-8398-569c72582ce8.png)
 
