@@ -10,8 +10,6 @@
 
 3. Create Cockroach database
 * Download and install from [CockroachLabs](https://www.cockroachlabs.com/docs/stable/build-a-go-app-with-cockroachdb-gorm.html), also I saw this [video](https://www.youtube.com/watch?v=6x9b0t-j1mM) and followed this [tutorial](https://kb.objectrocket.com/cockroachdb/how-to-retrieve-cockroachdb-record-using-golang-web-app-561).
-* Inside the project db folder run in a new Powershell `cockroach start --insecure --listen-addr=localhost:26257 --http-addr=localhost:8080`.
-* Open a new terminal and inside the project db folder run `cockroach sql --insecure`.
 
 ### SQL commands.
 
@@ -38,9 +36,15 @@ DELETE FROM tbldomains WHERE name='pushdev';
 * `vue create domains-app`
 * `cd domains-app`
 * `npm i vue-resource --save`
-* `npm run serve -- --port 3000`
 * [How to install bootstrap](https://bootstrap-vue.org/docs)
  
 ## How to run 
 
-* `go run environment.go main.go`
+* Inside the project db folder run in a new Powershell `cockroach start --insecure --listen-addr=localhost:26257 --http-addr=localhost:8080`.
+* Open a new terminal and inside the project db folder run `cockroach sql --insecure`.
+* `go run environment.go main.go`. Open `http://localhost:8081/`
+* `npm run serve -- --port 3000`. Open `http://localhost:3000/`
+
+Enjoy!
+
+
