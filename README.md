@@ -6,7 +6,7 @@
 2. Once that we have the `domain` we can create:
 * GET request to [SSLLABS](https://api.ssllabs.com/) to get the servers info. You can see the docs [here](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md).
 * GET request to [ipInfo](https://ipinfo.io/) to get the country and the organization name (API Key generated and Env variable created). I tried with [golang-packages](https://github.com/likexian/whois-go) but there are some issues.
-* GET request to [metadata](https://home.urlmeta.org/) to get the image and the title of the webpage.
+* GET request to [metadata](https://urlmeta.org/) to get the image and the title of the webpage.
 
 3. Create Cockroach database
 * Download and install from [CockroachLabs](https://www.cockroachlabs.com/docs/stable/build-a-go-app-with-cockroachdb-gorm.html), also I saw this [video](https://www.youtube.com/watch?v=6x9b0t-j1mM) and followed this [tutorial](https://kb.objectrocket.com/cockroachdb/how-to-retrieve-cockroachdb-record-using-golang-web-app-561).
