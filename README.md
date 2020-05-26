@@ -5,7 +5,7 @@
 1. Create basic API REST to render domains. `domain/yourdomain`
 2. Once that we have the `domain` we can create:
 * GET request to [SSLLABS](https://api.ssllabs.com/) to get the servers info. You can see the docs [here](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md).
-* GET request to [ipInfo](https://ipinfo.io/) to get the country and the organization name (API Key generated and Env variable created). I tried with [golang-packages]("github.com/likexian/whois-go") but there are some issues.
+* GET request to [ipInfo](https://ipinfo.io/) to get the country and the organization name (API Key generated and Env variable created). I tried with [golang-packages](https://github.com/likexian/whois-go) but there are some issues.
 * GET request to [metadata](https://home.urlmeta.org/) to get the image and the title of the webpage.
 
 3. Create Cockroach database
