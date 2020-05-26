@@ -41,7 +41,7 @@ DELETE FROM tbldomains WHERE name='pushdev';
 ## How to run 
 
 * Inside the project db folder run in a new Powershell `cockroach start --insecure --listen-addr=localhost:26257 --http-addr=localhost:8080`.
-* Open a new terminal and inside the project db folder run `cockroach sql --insecure`.
+* Open a new Powershell and inside the project db folder run `cockroach sql --insecure`.
 * `go run environment.go main.go`. Open `http://localhost:8081/`
 * `npm run serve -- --port 3000`. Open `http://localhost:3000/`
 
